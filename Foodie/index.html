@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOODIE — Food Delivery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">FOODIE</div>
+      <nav>
+        <button class="nav-btn active" data-page="home">Home</button>
+        <button class="nav-btn" data-page="search">Search</button>
+        <button class="nav-btn" data-page="cart">Cart <span id="cartBadge">0</span></button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="page active-page">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">FOOD DELIVERY</p>
+            <h1>Hai,<br>Selamat datang! 👋</h1>
+            <p class="muted">Temukan makanan favoritmu hari ini.</p>
+          </div>
+          <div class="hero-art">🍕</div>
+        </div>
+
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="homeSearch" placeholder="Mau makan apa hari ini?">
+        </div>
+
+        <div class="section-head"><h2>Kategori</h2><button class="link-btn" onclick="showPage('search')">Lihat semua</button></div>
+        <div class="categories">
+          <button onclick="filterCategory('Semua')">🍱<span>Semua</span></button>
+          <button onclick="filterCategory('Pizza')">🍕<span>Pizza</span></button>
+          <button onclick="filterCategory('Burger')">🍔<span>Burger</span></button>
+          <button onclick="filterCategory('Minuman')">🥤<span>Minuman</span></button>
+          <button onclick="filterCategory('Dessert')">🧁<span>Dessert</span></button>
+        </div>
+
+        <div class="section-head"><h2>Rekomendasi untukmu</h2><button class="link-btn" onclick="showPage('search')">Lihat semua</button></div>
+        <div class="recommend-grid">
+          <article class="recommend-card" onclick="openProduct('Cheese Burger')"><img src="assets/burger.jpg"><b>Cheese Burger</b><small>Rp 28.000</small></article>
+          <article class="recommend-card" onclick="openProduct('Spicy Ramen')"><img src="assets/ramen.jpg"><b>Spicy Ramen</b><small>Rp 32.000</small></article>
+        </div>
+      </section>
+
+      <section id="search" class="page">
+        <div class="page-title"><button class="back" onclick="showPage('home')">←</button><h1>Search</h1></div>
+        <div class="search-box"><span>⌕</span><input id="searchInput" placeholder="Cari makanan..."></div>
+        <div class="chips">
+          <button class="chip active" data-cat="Semua">Semua</button>
+          <button class="chip" data-cat="Pizza">Pizza</button>
+          <button class="chip" data-cat="Pasta">Pasta</button>
+          <button class="chip" data-cat="Burger">Burger</button>
+        </div>
+        <div id="productList" class="product-list"></div>
+      </section>
+
+      <section id="product" class="page">
+        <div class="product-detail">
+          <button class="back" onclick="showPage('search')">←</button>
+          <img id="detailImage" class="detail-image" src="">
+          <div class="detail-content">
+            <div class="rating">★ 4.7 (200)</div>
+            <h1 id="detailName">Margherita Pizza</h1>
+            <h2 id="detailPrice">Rp 65.000</h2>
+            <p class="muted">Pizza klasik dengan saus tomat segar, keju mozzarella, dan daun basil.</p>
+
+            <h3>Pilih Ukuran</h3>
+            <div class="size-options">
+              <button data-price="45000">Small<br><small>Rp 45.000</small></button>
+              <button class="selected" data-price="65000">Medium<br><small>Rp 65.000</small></button>
+              <button data-price="69000">Large<br><small>Rp 69.000</small></button>
+            </div>
+
+            <h3>Tambah Topping</h3>
+            <div class="toppings">
+              <label><span>Extra Cheese</span><b>+ Rp 10.000</b><input type="checkbox" data-extra="10000"></label>
+              <label><span>Beef</span><b>+ Rp 15.000</b><input type="checkbox" data-extra="15000"></label>
+              <label><span>Mushroom</span><b>+ Rp 8.000</b><input type="checkbox" data-extra="8000"></label>
+              <label><span>Olive</span><b>+ Rp 8.000</b><input type="checkbox" data-extra="8000"></label>
+            </div>
+
+            <div class="buy-row">
+              <div class="qty"><button onclick="changeDetailQty(-1)">−</button><span id="detailQty">1</span><button onclick="changeDetailQty(1)">+</button></div>
+              <button class="primary" onclick="addDetailToCart()">Tambah ke Keranjang</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cart" class="page">
+        <div class="page-title"><button class="back" onclick="showPage('home')">←</button><h1>Keranjang</h1></div>
+        <div id="cartItems"></div>
+        <div class="summary">
+          <div><span>Subtotal</span><b id="subtotal">Rp 0</b></div>
+          <div><span>Ongkir</span><b>Rp 10.000</b></div>
+          <hr>
+          <div class="total"><span>Total</span><b id="total">Rp 10.000</b></div>
+          <button class="primary full" onclick="showPage('checkout')">Checkout</button>
+        </div>
+      </section>
+
+      <section id="checkout" class="page">
+        <div class="page-title"><button class="back" onclick="showPage('cart')">←</button><h1>Checkout</h1></div>
+        <h3>Alamat Pengiriman</h3>
+        <div class="address"><b>Rumah</b><span>Jl. Mawar No. 12, Bandung</span><button>Ubah</button></div>
+        <h3>Metode Pembayaran</h3>
+        <div class="payments">
+          <label><input type="radio" name="pay" checked>E-Wallet</label>
+          <label><input type="radio" name="pay">Transfer Bank</label>
+          <label><input type="radio" name="pay">COD (Bayar di Tempat)</label>
+        </div>
+        <h3>Rincian Pesanan <span id="checkoutCount" class="right">0 item</span></h3>
+        <div class="summary">
+          <div><span>Subtotal</span><b id="checkoutSubtotal">Rp 0</b></div>
+          <div><span>Ongkir</span><b>Rp 10.000</b></div>
+          <hr><div class="total"><span>Total</span><b id="checkoutTotal">Rp 10.000</b></div>
+          <button class="primary full" onclick="placeOrder()">🔒 Bayar Sekarang</button>
+        </div>
+      </section>
+
+      <section id="success" class="page success-page">
+        <div class="success-icon">✓ 🛍️</div>
+        <h1>Pesanan Berhasil!</h1>
+        <p>Terima kasih, pesananmu<br>sedang kami siapkan.</p>
+        <div class="order-no">No. Pesanan<br><b>FD123456789</b></div>
+        <button class="primary full" onclick="showPage('home')">Lihat Pesanan</button>
+        <button class="secondary full" onclick="showPage('home')">Kembali ke Home</button>
+      </section>
+    </main>
+
+    <footer class="bottom-nav">
+      <button data-page="home" class="active">⌂<small>Home</small></button>
+      <button data-page="search">⌕<small>Search</small></button>
+      <button data-page="cart">▣<small>Orders</small></button>
+      <button>♙<small>Profile</small></button>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
